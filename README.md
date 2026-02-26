@@ -117,8 +117,6 @@ createdb fintrack
 npx prisma migrate dev
 ```
 
----
-
 ## 🔧 Environment Variables
 
 ### Backend (.env)
@@ -207,21 +205,6 @@ Goals (id, user_id, title, target_amount, current_amount)
 
 ---
 
-## 🤝 Contributing
-
-1. Fork โปรเจค
-2. สร้าง feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit การเปลี่ยนแปลง (`git commit -m 'Add amazing feature'`)
-4. Push ไป branch (`git push origin feature/amazing-feature`)
-5. เปิด Pull Request
-
----
-
-## 📄 License
-
-โปรเจคนี้ใช้ MIT License - ดูที่ [LICENSE](LICENSE) สำหรับรายละเอียด
-
----
 
 ## 🙏 Acknowledgments
 
@@ -232,11 +215,5 @@ Goals (id, user_id, title, target_amount, current_amount)
 
 ---
 
-## 📞 Contact
-
-- **GitHub**: [tanespol916](https://github.com/tanespol916)
-- **Discord**: สำหรับการสนับสนุนและข้อเสนอแนะ
-
----
 
 **⭐ ถ้าชอบโปรเจคนี้ อย่าลืมให้ Star!** 🌟

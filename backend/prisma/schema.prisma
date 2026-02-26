@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "commonjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  discord_id String?  @unique
+  username   String   @unique
+  password   String 
+  name       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  accounts     Account[]
+  budgets      Budget[]
+  goals        Goal[]
+  transactions Transaction[]
+}
+
+model Account {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  type      String
+  balance   Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id])
+  transactions Transaction[]
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  type      String
+  icon      String
+  color     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  transactions Transaction[]
+  budgets      Budget[]
+}
+
+model Transaction {
+  id          Int       @id @default(autoincrement())
+  accountId   Int
+  categoryId  Int
+  userId      Int
+  amount      Float
+  description String
+  date        DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  account  Account  @relation(fields: [accountId], references: [id], map: "Transaction_accountId_fkey")
+  category Category @relation(fields: [categoryId], references: [id], map: "Transaction_categoryId_fkey")
+  user     User     @relation(fields: [userId], references: [id], map: "Transaction_userId_fkey")
+}
+
+model Budget {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  categoryId Int
+  amount     Float
+  month      Int
+  year       Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+}
+
+model Goal {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  title         String
+  targetAmount  Float
+  currentAmount Float     @default(0)
+  deadline      DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
