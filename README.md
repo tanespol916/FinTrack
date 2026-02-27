@@ -117,7 +117,7 @@ createdb fintrack
 npx prisma migrate dev
 ```
 
-## 🔧 Environment Variables
+## Environment Variables
 
 ### Backend (.env)
 ```env
@@ -138,12 +138,12 @@ NEXT_PUBLIC_API_URL="http://localhost:3000"
 ## 📊 Database Schema
 
 ```sql
-Users (id, discord_id, username, email)
-Accounts (id, user_id, name, type, balance)
-Categories (id, name, type, icon, color)
-Transactions (id, account_id, category_id, amount, description, date)
-Budgets (id, user_id, category_id, amount, month, year)
-Goals (id, user_id, title, target_amount, current_amount)
+Users (id, discord_id, username, password, name, created_at, updated_at)
+Accounts (id, user_id, name, type, balance, created_at, updated_at)
+Categories (id, name, type, icon, color, created_at, updated_at)
+Transactions (id, account_id, category_id, user_id, amount, description, date, created_at, updated_at)
+Budgets (id, user_id, category_id, amount, month, year, created_at, updated_at)
+Goals (id, user_id, title, target_amount, current_amount, deadline, created_at, updated_at)
 ```
 
 ---

@@ -41,6 +41,17 @@ yarn-error.log*
 next-env.d.ts
 
 
-/src/generated/prisma
+backend/src/generated/prisma/
 
 doc/
+
+backend/lib
+
+# TypeScript compiled files
+*.js
+*.js.map
+*.d.ts
+
+
+backend/package-lock.json
+backend/src/__tests__/
