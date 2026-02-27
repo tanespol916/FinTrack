@@ -89,7 +89,7 @@ model Goal {
   id            Int       @id @default(autoincrement())
   userId        Int
   title         String
-  targetAmount  Float
+  targetAmount  Float     @default(0)
   currentAmount Float     @default(0)
   deadline      DateTime?
   createdAt     DateTime  @default(now())

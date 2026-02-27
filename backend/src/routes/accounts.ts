@@ -232,4 +232,110 @@ router.get("/:id/balance", authMiddleware, async (req: AuthRequest, res: Respons
   }
 });
 
+// POST /api/accounts/transfer - ย้ายเงินระหว่างบัญชี
+router.post(
+  "/transfer",
+  authMiddleware,
+  [
+    body("fromAccountId").isInt({ min: 1 }).withMessage("รหัสบัญชีต้นทางต้องเป็นจำนวนเต็มบวก"),
+    body("toAccountId").isInt({ min: 1 }).withMessage("รหัสบัญชีปลายทางต้องเป็นจำนวนเต็มบวก"),
+    body("amount").isFloat({ min: 0.01 }).withMessage("จำนวนเงินต้องมากกว่า 0"),
+    
+  ],
+  async (req: AuthRequest, res: Response) => {
+    try {
+      if (handleValidationErrors(req, res)) return;
+
+      if (!req.user) {
+        const response: AccountResponse = {
+          success: false,
+          message: "ผู้ใช้ไม่ได้รับการรับรอง",
+        };
+        res.status(401).json(response);
+        return;
+      }
+
+      const { fromAccountId, toAccountId, amount } = req.body;
+
+      // ตรวจสอบว่าไม่ได้ย้ายไปบัญชีเดียวกัน
+      if (fromAccountId === toAccountId) {
+        const response: AccountResponse = {
+          success: false,
+          message: "ไม่สามารถย้ายเงินไปบัญชีเดียวกันได้",
+        };
+        res.status(400).json(response);
+        return;
+      }
+
+      // ตรวจสอบบัญชีต้นทาง
+      const fromAccount = await prisma.account.findFirst({
+        where: { id: fromAccountId, userId: req.user.id },
+      });
+
+      if (!fromAccount) {
+        const response: AccountResponse = {
+          success: false,
+          message: "ไม่พบบัญชีต้นทางหรือบัญชีไม่ใช่ของผู้ใช้",
+        };
+        res.status(404).json(response);
+        return;
+      }
+
+      // ตรวจสอบบัญชีปลายทาง
+      const toAccount = await prisma.account.findFirst({
+        where: { id: toAccountId, userId: req.user.id },
+      });
+
+      if (!toAccount) {
+        const response: AccountResponse = {
+          success: false,
+          message: "ไม่พบบัญชีปลายทางหรือบัญชีไม่ใช่ของผู้ใช้",
+        };
+        res.status(404).json(response);
+        return;
+      }
+
+      // ตรวจสอบว่าบัญชีต้นทางมีเงินพอ
+      if (fromAccount.balance < amount) {
+        const response: AccountResponse = {
+          success: false,
+          message: "ยอดเงินในบัญชีต้นทางไม่เพียงพอ",
+        };
+        res.status(400).json(response);
+        return;
+      }
+
+      // ทำการย้ายเงิน
+      const [updatedFromAccount, updatedToAccount] = await prisma.$transaction([
+        prisma.account.update({
+          where: { id: fromAccountId },
+          data: { balance: fromAccount.balance - amount },
+        }),
+        prisma.account.update({
+          where: { id: toAccountId },
+          data: { balance: toAccount.balance + amount },
+        }),
+      ]);
+
+      const response: AccountResponse = {
+        success: true,
+        message: `ย้ายเงิน ${amount} จาก ${fromAccount.name} ไปยัง ${toAccount.name} สำเร็จ`,
+        data: {
+          fromAccount: updatedFromAccount,
+          toAccount: updatedToAccount,
+        },
+      };
+
+      res.json(response);
+    } catch (error: any) {
+      console.error("Transfer error:", error);
+      const response: AccountResponse = {
+        success: false,
+        message: error?.message ?? "เกิดข้อผิดพลาดในการย้ายเงิน",
+      };
+      res.status(500).json(response);
+    }
+  }
+);
+
 export default router;

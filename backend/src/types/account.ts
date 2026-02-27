@@ -27,6 +27,8 @@ export interface AccountResponse {
     account?: Account;
     accounts?: Account[];
     balance?: number;
+    fromAccount?: Account;
+    toAccount?: Account;
     errors?: any[];
   };
 }

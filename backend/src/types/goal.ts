@@ -11,7 +11,7 @@ export interface Goal {
 
 export interface CreateGoalRequest {
   title: string;
-  targetAmount: number;
+  targetAmount?: number;
   currentAmount?: number;
   deadline?: string;
 }
@@ -26,6 +26,7 @@ export interface GoalResponse {
   data?: {
     goal?: Goal;
     goals?: Goal[];
+    account?: any;
     errors?: any[];
   };
 }

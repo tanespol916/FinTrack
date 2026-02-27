@@ -12,6 +12,40 @@ import {
 
 const router = Router();
 
+// Helper function to update account balance based on all transactions
+const updateAccountBalance = async (accountId: number): Promise<void> => {
+  try {
+    // Get all transactions for this account with category info
+    const transactions = await prisma.transaction.findMany({
+      where: { accountId },
+      include: {
+        category: true
+      }
+    });
+
+    // Calculate balance as sum of all transaction effects
+    // Income adds to balance, Expenses subtract from balance
+    let calculatedBalance = 0;
+    for (const tx of transactions) {
+      const categoryType = tx.category as any;
+      if (categoryType?.type === 'income') {
+        calculatedBalance += tx.amount;
+      } else {
+        calculatedBalance -= tx.amount;
+      }
+    }
+
+    // Update account balance with calculated value
+    await prisma.account.update({
+      where: { id: accountId },
+      data: { balance: calculatedBalance }
+    });
+  } catch (error) {
+    console.error("Error updating account balance:", error);
+    throw error;
+  }
+};
+
 const handleValidationErrors = (req: AuthRequest, res: Response): boolean => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -190,6 +224,9 @@ router.post(
         },
       });
 
+      // Update account balance
+      await updateAccountBalance(accountId);
+
       const response: TransactionResponse = {
         success: true,
         message: "Transaction created successfully",
@@ -308,6 +345,12 @@ router.put(
         },
       });
 
+      // Update account balance (both old and new accounts if account changed)
+      await updateAccountBalance(existingTransaction.accountId);
+      if (updateData.accountId && updateData.accountId !== existingTransaction.accountId) {
+        await updateAccountBalance(updateData.accountId);
+      }
+
       const response: TransactionResponse = {
         success: true,
         message: "Transaction updated successfully",
@@ -365,6 +408,9 @@ router.delete("/:id", authMiddleware, async (req: AuthRequest, res: Response) =>
     await prisma.transaction.delete({
       where: { id: transactionId },
     });
+
+    // Update account balance to reverse the transaction effect
+    await updateAccountBalance(existingTransaction.accountId);
 
     const response: TransactionResponse = {
       success: true,

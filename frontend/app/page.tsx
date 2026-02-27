@@ -1,10 +1,18 @@
+"use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Home() {
-  return (
-    <div className="flex flex-col justify-center items-center h-screen gap-4">
-      <h1 className="text-amber-950 text-2xl font-bold">FinTrack</h1>
-      
-    </div>
-  )
+  const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading) {
+      router.replace(isAuthenticated ? "/dashboard" : "/login");
+    }
+  }, [isAuthenticated, isLoading, router]);
+
+  return null;
 }

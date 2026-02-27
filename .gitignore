@@ -51,7 +51,7 @@ backend/lib
 *.js
 *.js.map
 *.d.ts
-
+*.d.ts.map
 
 backend/package-lock.json
 backend/src/__tests__/

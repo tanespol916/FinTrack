@@ -18,7 +18,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "jest --runInBand --forceExit",
-    "test:watch": "jest --watch --runInBand"
+    "test:watch": "jest --watch --runInBand",
+    "seed": "ts-node prisma/seed.ts"
   },
   "jest": {
     "preset": "ts-jest",
