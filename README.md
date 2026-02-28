@@ -1,238 +1,280 @@
 # FinTrack 🏦
 
-AI-Powered Finance Tracker พร้อม Discord Bot - ระบบติดตามรายรับรายจ่ายสมัยใหม่ที่ใช้งานง่ายที่สุด
-
-## 🎯 ภาพรวมโปรเจค
-
-FinTrack เป็นแอปพลิเคชันติดตามการเงินส่วนบุคคลที่ผสมผสาน AI และ Discord Bot เข้าด้วยกัน ช่วยให้คุณสามารถบันทึกรายรับ-รายจ่ายได้อย่างง่ายดายเพียงแค่พิมพ์ข้อความธรรมดาใน Discord
-
-### ✨ ฟีเจอร์หลัก
-
-- 🤖 **AI Natural Language Processing** - บันทึกรายการด้วยภาษาพูดธรรมดา
-- 💬 **Discord Bot Integration** - ใช้งานผ่าน Discord ที่คุ้นเคย
-- 📊 **Smart Dashboard** - ติดตามการเงินแบบ real-time
-- 📈 **AI Analytics** - วิเคราะห์และแนะนำการเงินอัตโนมัติ
-- 🎯 **Budget Management** - ตั้งงบประมาณและเป้าหมายการเงิน
-- 🔔 **Smart Notifications** - แจ้งเตือนเมื่อใกล้เกินงบ
-- 📱 **Multi-platform** - ใช้ได้ทั้ง Discord และ Web Dashboard
+ระบบติดตามการเงินส่วนบุคคล พร้อม Web Dashboard และ Discord Bot — บันทึกรายรับ-รายจ่ายได้ทันทีด้วยภาษาพูดธรรมดา
 
 ---
 
-## 🚀 วิธีใช้งาน
+## ✨ ฟีเจอร์
 
-### Discord Bot Commands
+- 💬 **Discord Bot** — บันทึกรายการแค่พิมพ์ข้อความ เช่น `กินข้าว 120` หรือ `เงินเดือน 30000`
+- 🏷️ **Auto-Categorize** — จำแนกหมวดหมู่อัตโนมัติ (Food, Transport, Shopping, Salary ฯลฯ)
+- 📊 **Web Dashboard** — ดูภาพรวมรายรับ-รายจ่าย, บัญชี, งบประมาณ และเป้าหมายการเงิน
+- � **Discord Account Linking** — เชื่อม Discord ID กับบัญชีบนเว็บ ข้อมูลซิงค์กันทันที
+- 🎯 **Budget & Goals** — ตั้งงบรายเดือนตามหมวดหมู่ และเป้าหมายเก็บเงินพร้อม deadline
+- � **JWT Authentication** — ระบบ login/register ปลอดภัย
 
-#### บันทึกรายการ
-```
-ฉันกินข้าว 120           → บันทึกรายจ่ายอาหาร 120 บาท
-เงินเดือน 30000       → บันทึกรายรับเงินเดือน 30000 บาท
-เติมน้ำมัน 1500      → บันทึกรายจ่ายค่าน้ำมัน 1500 บาท
-ซื้อเสื้อ 890         → บันทึกรายจ่ายช้อปปิ้ง 890 บาท
-```
+---
 
-#### ดูข้อมูล
-```
-/ดูยอดเดือนนี้        → แสดงสรุปรายรับ-รายจ่ายเดือนปัจจุบัน
-/ดูงบอาหาร            → แสดงยอดใช้จ่ายหมวดอาหารทั้งเดือน
-/ดูรายการล่าสุด      → แสดงรายการ 10 อันล่าสุด
-```
+## �️ โครงสร้างโปรเจค
 
-#### AI Features
 ```
-/วิเคราะห์เดือนนี้     → AI วิเคราะห์การเงินเดือนนี้
-/แนะนำการประหยัด      → AI แนะนำวิธีลดรายจ่าย
-/ทำนายเดือนหน้า        → AI ทำนายแนวโน้มการเงิน
+FinTrack/
+├── backend/          # Node.js + Express + TypeScript API
+│   ├── prisma/       # Database schema & migrations
+│   └── src/
+│       ├── routes/   # auth, accounts, transactions, categories, budgets, goals
+│       ├── middleware/
+│       └── lib/
+├── frontend/         # Next.js 15 + TypeScript Web Dashboard
+│   ├── app/
+│   │   ├── dashboard/
+│   │   ├── transactions/
+│   │   ├── accounts/
+│   │   ├── budgets/
+│   │   ├── categories/
+│   │   ├── goals/
+│   │   ├── login/
+│   │   └── register/
+│   ├── components/
+│   ├── contexts/
+│   └── lib/
+└── discord-bot/      # Python Discord Bot
+    ├── bot.py
+    └── requirements.txt
 ```
-
-### Web Dashboard
-
-- **Dashboard** - ภาพรวมการเงินและกราฟแนวโน้ม
-- **Transactions** - จัดการรายการและประวัติ
-- **Reports** - รายงานรายเดือนพร้อม export
-- **Budgets** - ตั้งงบประมาณและเป้าหมาย
-- **Settings** - จัดการบัญชีและหมวดหมู่
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- **Next.js 15** - React Framework พร้อม App Router
-- **TypeScript** - Type Safety
-- **Tailwind CSS** - Styling
-- **Chart.js** - Data Visualization
-
-### Backend
-- **Node.js + Express** - API Server
-- **TypeScript** - Type Safety
-- **PostgreSQL** - Database
-- **Prisma** - ORM
-
-### AI & Integration
-- **Gemini API** - Natural Language Processing
-- **Discord.js** - Discord Bot
-- **JWT** - Authentication
+| Layer | Technology |
+|---|---|
+| Frontend | Next.js 15, TypeScript, Tailwind CSS |
+| Backend | Node.js, Express, TypeScript |
+| Database | PostgreSQL, Prisma ORM |
+| Discord Bot | Python 3, discord.py 2.3 |
+| Auth | JWT (jsonwebtoken), bcryptjs |
 
 ---
 
 ## 📋 ความต้องการระบบ
 
-- Node.js 18+
-- PostgreSQL 14+
-- Discord Bot Token
-- Gemini API Key (optional)
+- **Node.js** 18+
+- **Python** 3.10+
+- **PostgreSQL** 14+
+- **Discord Bot Token** (จาก Discord Developer Portal)
 
 ---
 
-## 🚀 Installation
+## 🚀 การติดตั้ง
 
 ### 1. Clone Repository
+
 ```bash
 git clone https://github.com/tanespol916/FinTrack.git
 cd FinTrack
 ```
 
-### 2. Backend Setup
+### 2. ตั้งค่า Backend
+
 ```bash
 cd backend
 npm install
-cp .env.example .env
-# แก้ไข .env ด้วยค่าที่เหมาะสม
-npm run dev
 ```
 
-### 3. Frontend Setup
+สร้างไฟล์ `.env`:
+
+```env
+DATABASE_URL="postgresql://username:password@localhost:5432/fintrack"
+JWT_SECRET="your_jwt_secret_key"
+PORT=3001
+```
+
+รัน database migration และ seed:
+
+```bash
+npx prisma migrate dev
+npm run seed        # (optional) ใส่ข้อมูลตัวอย่าง
+npm run dev         # เริ่ม backend ที่ http://localhost:3001
+```
+
+### 3. ตั้งค่า Frontend
+
 ```bash
 cd frontend
 npm install
-npm run dev
 ```
 
-### 4. Database Setup
+สร้างไฟล์ `.env.local`:
+
+```env
+NEXT_PUBLIC_API_URL="http://localhost:3001"
+```
+
 ```bash
-# สร้าง PostgreSQL database
-createdb fintrack
-
-# Run migrations
-npx prisma migrate dev
+npm run dev         # เริ่ม frontend ที่ http://localhost:3000
 ```
 
-## Environment Variables
+### 4. ตั้งค่า Discord Bot
 
-### Backend (.env)
+```bash
+cd discord-bot
+python3 -m venv venv
+source venv/bin/activate      # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+สร้างไฟล์ `.env`:
+
 ```env
-DATABASE_URL="postgresql://username:password@localhost:5432/fintrack"
 DISCORD_BOT_TOKEN="your_discord_bot_token"
-OPENAI_API_KEY="your_openai_api_key"
-JWT_SECRET="your_jwt_secret"
-PORT=3000
+API_URL="http://localhost:3001"
+BOT_USER_PASSWORD="your_bot_user_password"
 ```
 
-### Frontend (.env.local)
-```env
-NEXT_PUBLIC_API_URL="http://localhost:3000"
+```bash
+python bot.py
 ```
+
+> **⚠️ ข้อควรระวัง:**
+> - ต้องเปิด **Message Content Intent** ใน [Discord Developer Portal](https://discord.com/developers/applications)
+> - ต้องรัน backend ก่อนเสมอ
+
+---
+
+## 🤖 Discord Bot — วิธีใช้งาน
+
+### เชื่อมบัญชี (ครั้งแรก)
+
+ลงทะเบียนบัญชีที่เว็บก่อน แล้วใช้ slash command:
+
+```
+/register username:<username> password:<password>
+```
+
+### บันทึกรายการ
+
+พิมพ์ข้อความธรรมดาในรูป `<คำอธิบาย> <จำนวนเงิน>`:
+
+```
+กินข้าว 120
+เงินเดือน 30000
+เติมน้ำมัน 1500
+ซื้อเสื้อ 890
+Netflix 379
+ค่าเช่า 8000
+```
+
+Bot จะจำแนกหมวดหมู่ให้อัตโนมัติและตอบกลับทันที
+
+### ดูข้อมูล
+
+```
+ดูยอดเดือนนี้     → สรุปรายรับ-รายจ่ายเดือนปัจจุบัน + ยอดคงเหลือ
+ดูรายการล่าสุด   → แสดง 5 รายการล่าสุด
+ช่วยเหลือ         → แสดงคำสั่งทั้งหมด
+```
+
+### หมวดหมู่ที่รองรับ
+
+| หมวดหมู่ | ประเภท | ตัวอย่างคีย์เวิร์ด |
+|---|---|---|
+| Food & Dining 🍔 | รายจ่าย | กินข้าว, อาหาร, กาแฟ, restaurant |
+| Transportation 🚗 | รายจ่าย | น้ำมัน, รถไฟฟ้า, grab, taxi |
+| Shopping 🛍️ | รายจ่าย | ซื้อเสื้อ, shopee, lazada |
+| Entertainment 🎮 | รายจ่าย | หนัง, เกม, netflix, spotify |
+| Bills & Utilities 🏠 | รายจ่าย | ค่าไฟ, ค่าน้ำ, ค่าเช่า |
+| Salary 💼 | รายรับ | เงินเดือน, salary, โบนัส |
+| Freelance 💻 | รายรับ | freelance, ฟรีแลนซ์ |
+| Investment 📈 | รายรับ | ดอกเบี้ย, ปันผล, หุ้น |
+| Other Income 💰 | รายรับ | รับเงิน, ขายของ, กำไร |
+
+---
+
+## 🌐 Web Dashboard
+
+เข้าที่ `http://localhost:3000` หลังรัน frontend
+
+| หน้า | คำอธิบาย |
+|---|---|
+| `/dashboard` | ภาพรวมการเงิน, กราฟรายรับ-รายจ่าย |
+| `/transactions` | ประวัติรายการทั้งหมด, เพิ่ม/แก้ไข/ลบ |
+| `/accounts` | จัดการบัญชีและยอดเงิน |
+| `/budgets` | ตั้งงบรายเดือนตามหมวดหมู่ |
+| `/categories` | จัดการหมวดหมู่ |
+| `/goals` | เป้าหมายการเงิน พร้อม deadline |
 
 ---
 
 ## 📊 Database Schema
 
-```sql
-Users (id, discord_id, username, password, name, created_at, updated_at)
-Accounts (id, user_id, name, type, balance, created_at, updated_at)
-Categories (id, name, type, icon, color, created_at, updated_at)
-Transactions (id, account_id, category_id, user_id, amount, description, date, created_at, updated_at)
-Budgets (id, user_id, category_id, amount, month, year, created_at, updated_at)
-Goals (id, user_id, title, target_amount, current_amount, deadline, created_at, updated_at)
+```
+User          — id, discord_id, username, password, name
+Account       — id, userId, name, type, balance
+Category      — id, name, type, icon, color
+Transaction   — id, accountId, categoryId, userId, amount, description, date
+Budget        — id, userId, categoryId, amount, month, year
+Goal          — id, userId, title, targetAmount, currentAmount, deadline
 ```
 
 ---
 
-## 🎯 Development Roadmap
+## 🔌 API Endpoints
 
-### Phase 1: Core Features ✅
-- [x] Basic Discord Bot
-- [x] Transaction Recording
-- [x] Web Dashboard
-- [x] Database Integration
+Backend รันที่ `http://localhost:3001` พร้อม Swagger UI ที่ `/api-docs`
 
-### Phase 2: AI Features 🚧
-- [ ] Natural Language Processing
-- [ ] Smart Categorization
-- [ ] AI Analytics
-- [ ] Predictive Insights
-
-### Phase 3: Advanced Features 📋
-- [ ] Multi-currency Support
-- [ ] Recurring Transactions
-- [ ] Advanced Reports
-- [ ] Mobile App
+| Method | Endpoint | คำอธิบาย |
+|---|---|---|
+| POST | `/api/auth/register` | สมัครสมาชิก |
+| POST | `/api/auth/login` | เข้าสู่ระบบ |
+| POST | `/api/auth/link-discord` | เชื่อม Discord ID |
+| POST | `/api/auth/discord-login` | Login ด้วย Discord ID |
+| GET/POST | `/api/accounts` | จัดการบัญชี |
+| GET/POST | `/api/transactions` | จัดการรายการ |
+| GET/POST | `/api/categories` | จัดการหมวดหมู่ |
+| GET/POST | `/api/budgets` | จัดการงบประมาณ |
+| GET/POST | `/api/goals` | จัดการเป้าหมาย |
 
 ---
 
-## 🤖 Discord Bot Setup
+## 🔧 Discord Bot Setup
 
-### 1. สร้าง Discord Application
+### สร้าง Discord Application
+
 1. ไปที่ [Discord Developer Portal](https://discord.com/developers/applications)
-2. สร้าง New Application
-3. สร้าง Bot และได้ Token
-4. เปิด Privileged Gateway Intents
+2. สร้าง **New Application** → ไปที่แท็บ **Bot**
+3. คลิก **Reset Token** แล้ว copy token
+4. เปิด **Privileged Gateway Intents**:
+   - ✅ Message Content Intent
+5. ไปที่ **OAuth2 → URL Generator**:
+   - Scopes: `bot`, `applications.commands`
+   - Bot Permissions: `Send Messages`, `Read Message History`
+6. Copy URL แล้ว invite bot เข้า server
 
-### 2. Invite Bot ไป Server
-1. ไปที่ OAuth2 -> URL Generator
-2. เลือก scopes: `bot`, `applications.commands`
-3. เลือก permissions: `Send Messages`, `Read Message History`
-4. Copy URL และ invite bot
+---
 
-### 3. Run Python Discord Bot
+## 🧪 Running Tests
+
 ```bash
-cd discord-bot
-python3 -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-
-# สร้าง .env จาก .env.example และใส่ DISCORD_BOT_TOKEN
-cp .env.example .env
-# แก้ไข .env ใส่ token ของคุณ
-
-# รัน bot (ต้องรัน backend ก่อน)
-python bot.py
-```
-
-**⚠️ จำเป็นต้อง:**
-- เปิด **Message Content Intent** ใน Discord Developer Portal
-- รัน backend server ก่อน (`cd backend && npm run dev`)
-
----
-
-## 📱 Usage Examples
-
-### Daily Usage
-```
-ตื่นนอน → /ดูวันนี้
-กินข้าวเที่ยง → /กินข้าว 120
-เติมน้ำมัน → /เติมน้ำมัน 1500
-กลับบ้าน → /ดูยอดวันนี้
-```
-
-### Monthly Planning
-```
-ต้นเดือน → Web Dashboard: ตั้งงบ
-กลางเดือน → /ดูงบ (ตรวจสอบความคืบหน้า)
-สิ้นเดือน → /วิเคราะห์เดือนนี้
+cd backend
+npm test              # รัน unit tests ทั้งหมด
+npm run test:watch    # watch mode
 ```
 
 ---
 
+## 📦 Scripts สรุป
 
-## 🙏 Acknowledgments
-
-- [Discord.js](https://discord.js.org/) - Discord Bot Framework
-- [OpenAI](https://openai.com/) - AI API
-- [Next.js](https://nextjs.org/) - React Framework
-- [Tailwind CSS](https://tailwindcss.com/) - CSS Framework
+| Directory | Command | คำอธิบาย |
+|---|---|---|
+| `backend/` | `npm run dev` | รัน backend (nodemon) |
+| `backend/` | `npm run build` | Build TypeScript |
+| `backend/` | `npm run seed` | Seed ข้อมูลตัวอย่าง |
+| `backend/` | `npm test` | รัน tests |
+| `frontend/` | `npm run dev` | รัน frontend |
+| `frontend/` | `npm run build` | Build สำหรับ production |
+| `discord-bot/` | `python bot.py` | รัน Discord Bot |
 
 ---
-
 
 **⭐ ถ้าชอบโปรเจคนี้ อย่าลืมให้ Star!** 🌟
