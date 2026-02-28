@@ -106,7 +106,7 @@ def categorize(description: str):
     for cat_name, keywords in CATEGORY_MAP.items():
         if any(k.lower() in desc for k in keywords):
             return cat_name
-    return "อื่นๆ"
+    return "Other Expense"
 
 
 def is_income(description: str):
@@ -170,8 +170,17 @@ async def get_or_create_category(token: str, cat_name: str) -> int | None:
                     if cat["name"] == cat_name:
                         return cat["id"]
 
+        # If it's "Other Expense", try to find existing one first
+        if cat_name == "Other Expense":
+            async with session.get(f"{API_URL}/api/categories", headers=headers) as resp:
+                if resp.status == 200:
+                    data = await resp.json()
+                    for cat in data.get("data", {}).get("categories", []):
+                        if cat["name"] == "Other Expense":
+                            return cat["id"]
+        
         # Create category
-        meta = CATEGORY_META.get(cat_name, CATEGORY_META["อื่นๆ"])
+        meta = CATEGORY_META.get(cat_name, CATEGORY_META["Other Expense"])
         async with session.post(f"{API_URL}/api/categories", headers=headers, json={
             "name": cat_name,
             "type": meta[0],
