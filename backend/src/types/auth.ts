@@ -16,6 +16,7 @@ export interface RegisterRequest {
   username: string;
   password: string;
   name: string;
+  discord_id?: string;
 }
 
 export interface LoginRequest {

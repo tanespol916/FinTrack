@@ -59,7 +59,7 @@ router.post(
     try {
       if (handleValidationErrors(req, res)) return;
 
-      const { username, password, name }: RegisterRequest = req.body;
+      const { username, password, name, discord_id }: RegisterRequest = req.body;
 
       const existingUser = await prisma.user.findUnique({
         where: { username },
@@ -81,6 +81,7 @@ router.post(
           username,
           password: hashedPassword,
           name,
+          ...(discord_id && { discord_id }),
         },
       });
 
@@ -164,6 +165,122 @@ router.post(
       const response: AuthResponse = {
         success: false,
         message: error?.message ?? "Error during login",
+      };
+      res.status(500).json(response);
+    }
+  },
+);
+
+router.post(
+  "/discord-login",
+  [
+    body("discord_id").notEmpty().withMessage("Discord ID is required"),
+  ],
+  async (req: AuthRequest, res: Response) => {
+    try {
+      if (handleValidationErrors(req, res)) return;
+
+      const { discord_id }: { discord_id: string } = req.body;
+
+      const user = await prisma.user.findUnique({
+        where: { discord_id },
+      });
+
+      if (!user) {
+        const response: AuthResponse = {
+          success: false,
+          message: "Discord account not linked. Please link your account first.",
+        };
+        res.status(404).json(response);
+        return;
+      }
+
+      const token = generateToken(user.id, user.username);
+
+      const { password: _, ...userWithoutPassword } = user;
+
+      const response: AuthResponse = {
+        success: true,
+        message: "Discord login successful",
+        data: {
+          user: userWithoutPassword,
+          token,
+        },
+      };
+
+      res.json(response);
+    } catch (error: any) {
+      console.error("Discord login error:", error);
+      const response: AuthResponse = {
+        success: false,
+        message: error?.message ?? "Error during Discord login",
+      };
+      res.status(500).json(response);
+    }
+  },
+);
+
+router.post(
+  "/link-discord",
+  [
+    body("username").notEmpty().withMessage("Username is required"),
+    body("password").notEmpty().withMessage("Password is required"),
+    body("discord_id").notEmpty().withMessage("Discord ID is required"),
+  ],
+  async (req: AuthRequest, res: Response) => {
+    try {
+      if (handleValidationErrors(req, res)) return;
+
+      const { username, password, discord_id } = req.body;
+
+      const user = await prisma.user.findUnique({
+        where: { username },
+      });
+
+      if (!user) {
+        const response: AuthResponse = {
+          success: false,
+          message: "User not found",
+        };
+        res.status(404).json(response);
+        return;
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (!isPasswordValid) {
+        const response: AuthResponse = {
+          success: false,
+          message: "Invalid password",
+        };
+        res.status(401).json(response);
+        return;
+      }
+
+      const updatedUser = await prisma.user.update({
+        where: { id: user.id },
+        data: { discord_id },
+      });
+
+      const token = generateToken(updatedUser.id, updatedUser.username);
+
+      const { password: _, ...userWithoutPassword } = updatedUser;
+
+      const response: AuthResponse = {
+        success: true,
+        message: "Discord account linked successfully",
+        data: {
+          user: userWithoutPassword,
+          token,
+        },
+      };
+
+      res.json(response);
+    } catch (error: any) {
+      console.error("Link Discord error:", error);
+      const response: AuthResponse = {
+        success: false,
+        message: error?.message ?? "Error linking Discord account",
       };
       res.status(500).json(response);
     }
