@@ -60,4 +60,5 @@ backend/src/__tests__/
 /backend/discord-bot/__pycache__/
 /backend/discord-bot/*.pyc
 /backend/discord-bot/venv/
+/backend/discord-bot/.env
 
