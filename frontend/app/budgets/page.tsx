@@ -56,7 +56,7 @@ export default function BudgetsPage() {
     try {
       setLoading(true);
       const startDate = new Date(selectedYear, selectedMonth - 1, 1).toISOString();
-      const endDate = new Date(selectedYear, selectedMonth, 0).toISOString();
+      const endDate = new Date(selectedYear, selectedMonth - 1, new Date(selectedYear, selectedMonth, 0).getDate(), 23, 59, 59, 999).toISOString();
 
       const [budgetRes, txRes] = await Promise.all([
         budgetAPI.getByMonthYear(selectedMonth, selectedYear),

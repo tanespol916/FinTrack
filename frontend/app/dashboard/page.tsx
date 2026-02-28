@@ -37,7 +37,7 @@ export default function DashboardPage() {
       try {
         const now = new Date();
         const startDate = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-        const endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString();
+        const endDate = new Date(now.getFullYear(), now.getMonth(), new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate(), 23, 59, 59, 999).toISOString();
 
         const [txRes, budgetRes, goalRes, accountRes] = await Promise.all([
           transactionAPI.getAll({ startDate, endDate, limit: 100 }),
