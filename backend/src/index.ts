@@ -29,9 +29,10 @@ app.use('/api/goals', goalRoutes);
 app.get('/api/test', async (req, res) => {
   try {
     const userCount = await prisma.user.count();
-    res.json({ message: 'Database connected!', userCount });
-  } catch (error: any) {
-    res.status(500).json({ error: String(error) });
+    const categoryCount = await prisma.category.count();
+    res.json({ message: 'Database connected!', userCount, categoryCount });
+  } catch (error) {
+    res.status(500).json({ message: 'Database connection failed', error: error });
   }
 });
 
