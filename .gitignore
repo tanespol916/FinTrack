@@ -57,6 +57,7 @@ backend/package-lock.json
 backend/src/__tests__/
 
 # Discord bot (Python)
-discord-bot/__pycache__/
-discord-bot/*.pyc
-discord-bot/venv/
+/backend/discord-bot/__pycache__/
+/backend/discord-bot/*.pyc
+/backend/discord-bot/venv/
+
