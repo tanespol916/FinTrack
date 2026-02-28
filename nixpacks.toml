@@ -4,7 +4,9 @@ nixPkgs = ["nodejs_20", "postgresql"]
 
 [phases.build]
 cmds = [
-  "npm run build"
+  "npm run build",
+  "npm run migrate",
+  "npm run seed"
 ]
 
 [start]
