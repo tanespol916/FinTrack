@@ -17,8 +17,8 @@ import type * as Prisma from "./prismaNamespace"
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.4.1",
-  "engineVersion": "55ae170b1ced7fc6ed07a15f110549408c501bb3",
+  "clientVersion": "7.4.2",
+  "engineVersion": "94a226be1cf2967af2541cca5529f0f7ba866919",
   "activeProvider": "postgresql",
   "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider     = \"prisma-client\"\n  output       = \"../src/generated/prisma\"\n  moduleFormat = \"commonjs\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id         Int      @id @default(autoincrement())\n  discord_id String?  @unique\n  username   String   @unique\n  password   String\n  name       String\n  createdAt  DateTime @default(now())\n  updatedAt  DateTime @updatedAt\n\n  accounts     Account[]\n  budgets      Budget[]\n  goals        Goal[]\n  transactions Transaction[]\n}\n\nmodel Account {\n  id        Int      @id @default(autoincrement())\n  userId    Int\n  name      String\n  type      String\n  balance   Float    @default(0)\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  user         User          @relation(fields: [userId], references: [id])\n  transactions Transaction[]\n}\n\nmodel Category {\n  id        Int      @id @default(autoincrement())\n  name      String   @unique\n  type      String\n  icon      String\n  color     String\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  transactions Transaction[]\n  budgets      Budget[]\n}\n\nmodel Transaction {\n  id          Int      @id @default(autoincrement())\n  accountId   Int\n  categoryId  Int\n  userId      Int\n  amount      Float\n  description String\n  date        DateTime @default(now())\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  account  Account  @relation(fields: [accountId], references: [id], map: \"Transaction_accountId_fkey\")\n  category Category @relation(fields: [categoryId], references: [id], map: \"Transaction_categoryId_fkey\")\n  user     User     @relation(fields: [userId], references: [id], map: \"Transaction_userId_fkey\")\n}\n\nmodel Budget {\n  id         Int      @id @default(autoincrement())\n  userId     Int\n  categoryId Int\n  amount     Float\n  month      Int\n  year       Int\n  createdAt  DateTime @default(now())\n  updatedAt  DateTime @updatedAt\n\n  user     User     @relation(fields: [userId], references: [id])\n  category Category @relation(fields: [categoryId], references: [id])\n}\n\nmodel Goal {\n  id            Int       @id @default(autoincrement())\n  userId        Int\n  title         String\n  targetAmount  Float     @default(0)\n  currentAmount Float     @default(0)\n  deadline      DateTime?\n  createdAt     DateTime  @default(now())\n  updatedAt     DateTime  @updatedAt\n\n  user User @relation(fields: [userId], references: [id])\n}\n",
   "runtimeDataModel": {
@@ -67,7 +67,9 @@ export interface PrismaClientConstructor {
    * Type-safe database client for TypeScript
    * @example
    * ```
-   * const prisma = new PrismaClient()
+   * const prisma = new PrismaClient({
+   *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+   * })
    * // Fetch zero or more Users
    * const users = await prisma.user.findMany()
    * ```
@@ -89,7 +91,9 @@ export interface PrismaClientConstructor {
  * Type-safe database client for TypeScript
  * @example
  * ```
- * const prisma = new PrismaClient()
+ * const prisma = new PrismaClient({
+ *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+ * })
  * // Fetch zero or more Users
  * const users = await prisma.user.findMany()
  * ```
