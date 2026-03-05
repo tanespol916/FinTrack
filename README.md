@@ -87,7 +87,7 @@ npm install
 ```env
 DATABASE_URL="postgresql://username:password@localhost:5432/fintrack"
 JWT_SECRET="your_jwt_secret_key"
-PORT=3001
+PORT=4000
 ```
 
 รัน database migration และ seed:
@@ -95,7 +95,7 @@ PORT=3001
 ```bash
 npx prisma migrate dev
 npm run seed        # (optional) ใส่ข้อมูลตัวอย่าง
-npm run dev         # เริ่ม backend ที่ http://localhost:3001
+npm run dev         # เริ่ม backend ที่ http://localhost:4000
 ```
 
 ### 3. ตั้งค่า Frontend
