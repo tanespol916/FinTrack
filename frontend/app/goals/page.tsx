@@ -112,12 +112,6 @@ export default function GoalsPage() {
     setCreateModalOpen(true);
   };
 
-  const openProgressModal = (goal: Goal) => {
-    setError("");
-    setSelectedGoalId(goal.id);
-    resetProgress({ currentAmount: goal.currentAmount });
-    setProgressModalOpen(true);
-  };
 
   const openFundModal = (goal: Goal) => {
     setError("");
@@ -261,8 +255,10 @@ export default function GoalsPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {goals.length > 0 ? (
           goals.map((goal) => {
-            const percentage = Math.min((goal.currentAmount / goal.targetAmount) * 100, 100);
-            const isCompleted = goal.currentAmount >= goal.targetAmount;
+            const percentage = goal.targetAmount > 0 
+              ? Math.min((goal.currentAmount / goal.targetAmount) * 100, 100) 
+              : 0;
+            const isCompleted = goal.targetAmount > 0 && goal.currentAmount >= goal.targetAmount;
             const daysLeft = goal.deadline
               ? Math.ceil((new Date(goal.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
               : null;

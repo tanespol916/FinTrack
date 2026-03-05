@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -155,19 +155,15 @@ export default function TransactionsPage() {
   };
 
   const applyFilters = () => {
-    setLoading(true);
     setOffset(0);
-    fetchTransactions();
   };
 
   const clearFilters = () => {
-    setLoading(true);
     setFilterStartDate("");
     setFilterEndDate("");
     setFilterCategoryId("");
     setFilterAccountId("");
     setOffset(0);
-    fetchTransactions();
   };
 
   // Check if any filters are active
@@ -295,7 +291,7 @@ export default function TransactionsPage() {
           <Wallet className="mb-3 size-12 text-muted-foreground/50" />
           <p className="mb-2 text-muted-foreground">No accounts found</p>
           <p className="mb-4 text-sm text-muted-foreground">Create an account to start tracking transactions</p>
-          <Button variant="outline" size="sm" onClick={() => window.location.href = '/accounts'}>
+          <Button variant="outline" size="sm" onClick={() => useRouter().push('/accounts')}>
             <Plus className="size-4" />
             Create Account
           </Button>

@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  type ReactNode,
+} from "react";
 import { authAPI } from "@/lib/api";
 import type { User, LoginRequest, RegisterRequest } from "@/types";
 
@@ -21,19 +28,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const saveAuth = (user: User, token: string) => {
+  const saveAuth = useCallback((user: User, token: string) => {
     setUser(user);
     setToken(token);
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
-  };
+  }, []);
 
-  const clearAuth = () => {
+  const clearAuth = useCallback(() => {
     setUser(null);
     setToken(null);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-  };
+  }, []);
 
   const initAuth = useCallback(async () => {
     try {

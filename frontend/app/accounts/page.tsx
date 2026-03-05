@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Plus, X, CreditCard, Wallet, PiggyBank, DollarSign, TrendingUp, Home, ArrowRightLeft } from "lucide-react";
+import { Plus, Edit2,X, CreditCard, Wallet, PiggyBank, DollarSign, TrendingUp, Home, ArrowRightLeft } from "lucide-react";
 import { accountAPI } from "@/lib/api";
 import type { Account } from "@/types";
 import { Button } from "@/components/ui/button";
@@ -130,16 +130,6 @@ export default function AccountsPage() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this account?")) return;
-    try {
-      // Note: Delete endpoint doesn't exist in backend yet
-      console.log("Delete account not implemented in backend");
-    } catch (err) {
-      console.error("Delete error:", err);
-    }
-  };
-
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat("th-TH", { style: "currency", currency: "THB" }).format(amount);
 
@@ -209,7 +199,7 @@ export default function AccountsPage() {
                   </div>
                   <div className="flex gap-1">
                     <Button variant="ghost" size="icon-xs" onClick={() => openEditModal(account)}>
-                      <X className="size-3.5" />
+                      <Edit2 className="size-3.5" />
                     </Button>
                   </div>
                 </div>
@@ -220,12 +210,7 @@ export default function AccountsPage() {
                   <p className="text-xl font-bold">{formatCurrency(account.balance)}</p>
                 </div>
 
-                {/* Actions */}
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex-1">
-                    View Transactions
-                  </Button>
-                </div>
+                
               </div>
             );
           })}
