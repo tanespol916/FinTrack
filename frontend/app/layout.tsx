@@ -14,13 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FinTrack - Personal Finance Tracker",
-  description: "Track your income, expenses, budgets, and financial goals",
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
+  title: "FinTrack - ระบบติดตามการเงินส่วนบุคคล",
+  description: "ติดตากรายรับ รายจ่าย งบประมาณ และเป้าหมายทางการเงินของคุณ",
+  icons: "/icon-192.png",
   manifest: "/manifest.json",
 };
 
@@ -30,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="th" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

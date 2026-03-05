@@ -1,17 +1,13 @@
 # Nixpacks configuration for FinTrack monorepo
 [phases.setup]
-nixPkgs = ["nodejs_20", "postgresql"]
+nixPkgs = ["nodejs_20"]
 
 [phases.build]
 cmds = [
-  "npm run build",
-  "npm run migrate",
-  "npm run seed"
+  "npm ci --include=dev",
+  "npx prisma generate", 
+  "npm run build"
 ]
 
 [start]
 cmd = "npm start"
-
-[variables]
-NODE_ENV = "production"
-PORT = "4000"
